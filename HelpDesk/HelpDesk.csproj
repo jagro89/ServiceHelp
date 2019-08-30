@@ -196,9 +196,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201908222140211_FirstMigration.cs" />
-    <Compile Include="Migrations\201908222140211_FirstMigration.Designer.cs">
-      <DependentUpon>201908222140211_FirstMigration.cs</DependentUpon>
+    <Compile Include="Migrations\201908302054500_FirstModel.cs" />
+    <Compile Include="Migrations\201908302054500_FirstModel.Designer.cs">
+      <DependentUpon>201908302054500_FirstModel.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -267,10 +267,10 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Information\Contact.cshtml" />
     <Content Include="Views\Information\KnowledgeBase.cshtml" />
+    <Content Include="Views\Issue\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Issues\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -288,8 +288,8 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201908222140211_FirstMigration.resx">
-      <DependentUpon>201908222140211_FirstMigration.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201908302054500_FirstModel.resx">
+      <DependentUpon>201908302054500_FirstModel.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -12,7 +12,9 @@ namespace HelpDesk.Controllers
         // GET: Issues
         public ActionResult Index()
         {
-            return View();
+            DbContext db = new DbContext();
+            List<Issue> list = db.Issues.Include("Status").Include("Prioritet").Include("Category").Where(i => i.Status.CodeName != "close").OrderByDescending(i => i.Date).ToList();
+            return View(list);
         }
 
         // GET: Issues/Details/5

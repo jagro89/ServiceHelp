@@ -3,7 +3,6 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
-using static HelpDesk.Models.IssueModels;
 
 namespace HelpDesk.Models
 {
@@ -31,6 +30,10 @@ namespace HelpDesk.Models
             return new DbContext();
         }
 
+        public DbSet<Prioritet> Prioritets { get; set; }
+        public DbSet<Status> Statuses { get; set; }
+        public DbSet<AttachmentIssue> AttachmentIssues { get; set; }
+        public DbSet<CategoryIssue> CategoryIssues { get; set; }
         public DbSet<Issue> Issues { get; set; }
 
     }
