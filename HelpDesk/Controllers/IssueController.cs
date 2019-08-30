@@ -11,7 +11,7 @@ namespace HelpDesk.Controllers
     {
         // GET: Issues
         public ActionResult Index()
-        {
+        { tu skonczone na utworzeniu listy zgloszen, nie dociagaja sie same powiazane elementy bo nie sa virtual
             DbContext db = new DbContext();
             List<Issue> list = db.Issues.Include("Status").Include("Prioritet").Include("Category").Where(i => i.Status.CodeName != "close").OrderByDescending(i => i.Date).ToList();
             return View(list);

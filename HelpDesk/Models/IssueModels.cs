@@ -73,7 +73,7 @@ namespace HelpDesk.Models
 
         [Required]
         [Display(Name = "Priorytet")]
-        public Prioritet Prioritet { get; set; }
+        public virtual Prioritet Prioritet { get; set; }   tu nie dociaga sam tych powiazan bo nie ma virtual
 
         [Display(Name = "Serwisant")]
         public ApplicationUser ServiceUser { get; set; }
