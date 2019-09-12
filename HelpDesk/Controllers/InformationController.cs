@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace HelpDesk.Controllers
 {
-    public class InformationController : Controller
+    public class InformationController : BaseController
     {
         // GET: Contact
         public ActionResult Contact()

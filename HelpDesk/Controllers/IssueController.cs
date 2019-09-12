@@ -1,19 +1,21 @@
 ﻿using HelpDesk.Models;
+using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
 
 namespace HelpDesk.Controllers
 {
-    public class IssueController : Controller
+    public class IssueController : BaseController
     {
         // GET: Issues
         public ActionResult Index()
-        { tu skonczone na utworzeniu listy zgloszen, nie dociagaja sie same powiazane elementy bo nie sa virtual
-            DbContext db = new DbContext();
-            List<Issue> list = db.Issues.Include("Status").Include("Prioritet").Include("Category").Where(i => i.Status.CodeName != "close").OrderByDescending(i => i.Date).ToList();
+        { //tu skonczone na utworzeniu listy zgloszen, nie dociagaja sie same powiazane elementy bo nie sa virtual
+            List<Issue> list = DB.Issues.Where(i => i.Status.CodeName != "close").OrderByDescending(i => i.Date).ToList();
+            //List<Issue> list = db.Issues.Include("Status").Include("Prioritet").Include("Category").Where(i => i.Status.CodeName != "close").OrderByDescending(i => i.Date).ToList();
             return View(list);
         }
 
@@ -26,8 +28,6 @@ namespace HelpDesk.Controllers
         // GET: Issues/Create
         public ActionResult Create()
         {
-            DbContext db = new DbContext();
-
             return View();
         }
 
@@ -50,7 +50,14 @@ namespace HelpDesk.Controllers
         // GET: Issues/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            Issue issue = DB.Issues.Find(id);
+            bool is_admin = User.IsInRole(Consts.DEF_ADMIN_ROLE);
+            bool is_srvice = User.IsInRole(Consts.DEF_SERVICE_MAN_ROLE);
+
+            if (issue.User.Id != User.Identity.GetUserId() && !is_admin && !is_srvice)
+                return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+
+            return View(issue); Tu skonczylismy zrobi widok edycji
         }
 
         // POST: Issues/Edit/5

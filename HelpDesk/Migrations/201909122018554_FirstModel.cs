@@ -10,38 +10,38 @@ namespace HelpDesk.Migrations
             CreateTable(
                 "dbo.AttachmentIssues",
                 c => new
-                    {
-                        Id = c.Int(nullable: false, identity: true),
-                        FileName = c.String(),
-                        Attachment = c.Binary(),
-                        Issue_Id = c.Int(),
-                    })
+                {
+                    Id = c.Int(nullable: false, identity: true),
+                    FileName = c.String(),
+                    Attachment = c.Binary(),
+                    Issue_Id = c.Int(),
+                })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Issues", t => t.Issue_Id)
                 .Index(t => t.Issue_Id);
-            
+
             CreateTable(
                 "dbo.CategoryIssues",
                 c => new
-                    {
-                        Id = c.Int(nullable: false, identity: true),
-                        Name = c.String(),
-                    })
+                {
+                    Id = c.Int(nullable: false, identity: true),
+                    Name = c.String(),
+                })
                 .PrimaryKey(t => t.Id);
-            
+
             CreateTable(
                 "dbo.Issues",
                 c => new
-                    {
-                        Id = c.Int(nullable: false, identity: true),
-                        Date = c.DateTime(nullable: false),
-                        Title = c.String(),
-                        Description = c.String(),
-                        Prioritet_Id = c.Int(nullable: false),
-                        ServiceUser_Id = c.String(maxLength: 128),
-                        Status_Id = c.Int(nullable: false),
-                        User_Id = c.String(maxLength: 128),
-                    })
+                {
+                    Id = c.Int(nullable: false, identity: true),
+                    Date = c.DateTime(nullable: false),
+                    Title = c.String(),
+                    Description = c.String(),
+                    Prioritet_Id = c.Int(nullable: false),
+                    ServiceUser_Id = c.String(maxLength: 128),
+                    Status_Id = c.Int(nullable: false),
+                    User_Id = c.String(nullable: false, maxLength: 128),
+                })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Prioritets", t => t.Prioritet_Id, cascadeDelete: true)
                 .ForeignKey("dbo.AspNetUsers", t => t.ServiceUser_Id)
@@ -51,110 +51,110 @@ namespace HelpDesk.Migrations
                 .Index(t => t.ServiceUser_Id)
                 .Index(t => t.Status_Id)
                 .Index(t => t.User_Id);
-            
+
             CreateTable(
                 "dbo.Prioritets",
                 c => new
-                    {
-                        Id = c.Int(nullable: false, identity: true),
-                        Name = c.String(),
-                        CodeName = c.String(nullable: false),
-                    })
+                {
+                    Id = c.Int(nullable: false, identity: true),
+                    Name = c.String(),
+                    CodeName = c.String(nullable: false),
+                })
                 .PrimaryKey(t => t.Id);
-            
+
             CreateTable(
                 "dbo.AspNetUsers",
                 c => new
-                    {
-                        Id = c.String(nullable: false, maxLength: 128),
-                        Email = c.String(maxLength: 256),
-                        EmailConfirmed = c.Boolean(nullable: false),
-                        PasswordHash = c.String(),
-                        SecurityStamp = c.String(),
-                        PhoneNumber = c.String(),
-                        PhoneNumberConfirmed = c.Boolean(nullable: false),
-                        TwoFactorEnabled = c.Boolean(nullable: false),
-                        LockoutEndDateUtc = c.DateTime(),
-                        LockoutEnabled = c.Boolean(nullable: false),
-                        AccessFailedCount = c.Int(nullable: false),
-                        UserName = c.String(nullable: false, maxLength: 256),
-                    })
+                {
+                    Id = c.String(nullable: false, maxLength: 128),
+                    Email = c.String(maxLength: 256),
+                    EmailConfirmed = c.Boolean(nullable: false),
+                    PasswordHash = c.String(),
+                    SecurityStamp = c.String(),
+                    PhoneNumber = c.String(),
+                    PhoneNumberConfirmed = c.Boolean(nullable: false),
+                    TwoFactorEnabled = c.Boolean(nullable: false),
+                    LockoutEndDateUtc = c.DateTime(),
+                    LockoutEnabled = c.Boolean(nullable: false),
+                    AccessFailedCount = c.Int(nullable: false),
+                    UserName = c.String(nullable: false, maxLength: 256),
+                })
                 .PrimaryKey(t => t.Id)
                 .Index(t => t.UserName, unique: true, name: "UserNameIndex");
-            
+
             CreateTable(
                 "dbo.AspNetUserClaims",
                 c => new
-                    {
-                        Id = c.Int(nullable: false, identity: true),
-                        UserId = c.String(nullable: false, maxLength: 128),
-                        ClaimType = c.String(),
-                        ClaimValue = c.String(),
-                    })
+                {
+                    Id = c.Int(nullable: false, identity: true),
+                    UserId = c.String(nullable: false, maxLength: 128),
+                    ClaimType = c.String(),
+                    ClaimValue = c.String(),
+                })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.AspNetUsers", t => t.UserId, cascadeDelete: true)
                 .Index(t => t.UserId);
-            
+
             CreateTable(
                 "dbo.AspNetUserLogins",
                 c => new
-                    {
-                        LoginProvider = c.String(nullable: false, maxLength: 128),
-                        ProviderKey = c.String(nullable: false, maxLength: 128),
-                        UserId = c.String(nullable: false, maxLength: 128),
-                    })
+                {
+                    LoginProvider = c.String(nullable: false, maxLength: 128),
+                    ProviderKey = c.String(nullable: false, maxLength: 128),
+                    UserId = c.String(nullable: false, maxLength: 128),
+                })
                 .PrimaryKey(t => new { t.LoginProvider, t.ProviderKey, t.UserId })
                 .ForeignKey("dbo.AspNetUsers", t => t.UserId, cascadeDelete: true)
                 .Index(t => t.UserId);
-            
+
             CreateTable(
                 "dbo.AspNetUserRoles",
                 c => new
-                    {
-                        UserId = c.String(nullable: false, maxLength: 128),
-                        RoleId = c.String(nullable: false, maxLength: 128),
-                    })
+                {
+                    UserId = c.String(nullable: false, maxLength: 128),
+                    RoleId = c.String(nullable: false, maxLength: 128),
+                })
                 .PrimaryKey(t => new { t.UserId, t.RoleId })
                 .ForeignKey("dbo.AspNetUsers", t => t.UserId, cascadeDelete: true)
                 .ForeignKey("dbo.AspNetRoles", t => t.RoleId, cascadeDelete: true)
                 .Index(t => t.UserId)
                 .Index(t => t.RoleId);
-            
+
             CreateTable(
                 "dbo.Status",
                 c => new
-                    {
-                        Id = c.Int(nullable: false, identity: true),
-                        Name = c.String(),
-                        CodeName = c.String(nullable: false),
-                    })
+                {
+                    Id = c.Int(nullable: false, identity: true),
+                    Name = c.String(),
+                    CodeName = c.String(nullable: false),
+                })
                 .PrimaryKey(t => t.Id);
-            
+
             CreateTable(
                 "dbo.AspNetRoles",
                 c => new
-                    {
-                        Id = c.String(nullable: false, maxLength: 128),
-                        Name = c.String(nullable: false, maxLength: 256),
-                    })
+                {
+                    Id = c.String(nullable: false, maxLength: 128),
+                    Name = c.String(nullable: false, maxLength: 256),
+                })
                 .PrimaryKey(t => t.Id)
                 .Index(t => t.Name, unique: true, name: "RoleNameIndex");
-            
+
             CreateTable(
                 "dbo.IssueCategoryIssues",
                 c => new
-                    {
-                        Issue_Id = c.Int(nullable: false),
-                        CategoryIssue_Id = c.Int(nullable: false),
-                    })
+                {
+                    Issue_Id = c.Int(nullable: false),
+                    CategoryIssue_Id = c.Int(nullable: false),
+                })
                 .PrimaryKey(t => new { t.Issue_Id, t.CategoryIssue_Id })
                 .ForeignKey("dbo.Issues", t => t.Issue_Id, cascadeDelete: true)
                 .ForeignKey("dbo.CategoryIssues", t => t.CategoryIssue_Id, cascadeDelete: true)
                 .Index(t => t.Issue_Id)
                 .Index(t => t.CategoryIssue_Id);
-            
+
         }
-        
+
         public override void Down()
         {
             DropForeignKey("dbo.AspNetUserRoles", "RoleId", "dbo.AspNetRoles");
@@ -193,5 +193,6 @@ namespace HelpDesk.Migrations
             DropTable("dbo.CategoryIssues");
             DropTable("dbo.AttachmentIssues");
         }
+
     }
 }

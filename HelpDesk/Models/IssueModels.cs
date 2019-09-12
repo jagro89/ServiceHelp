@@ -18,7 +18,7 @@ namespace HelpDesk.Models
         public string CodeName { get; set; }
 
         [Display(Name = "Zgłoszenia")]
-        public ICollection<Issue> Issues { get; set; }
+        public virtual ICollection<Issue> Issues { get; set; }
     }
 
     public class Status
@@ -33,7 +33,7 @@ namespace HelpDesk.Models
         public string CodeName { get; set; }
 
         [Display(Name = "Zgłoszenia")]
-        public ICollection<Issue> Issues { get; set; }
+        public virtual ICollection<Issue> Issues { get; set; }
 
     }
 
@@ -56,7 +56,7 @@ namespace HelpDesk.Models
         [Display(Name = "Kategoria")]
         public string Name { get; set; }
         [Display(Name = "Zgłoszenia")]
-        public ICollection<Issue> Issue { get; set; }
+        public virtual ICollection<Issue> Issue { get; set; }
     }
 
     public class Issue
@@ -66,17 +66,18 @@ namespace HelpDesk.Models
         public int Id { get; set; }
 
         [Display(Name = "Osoba zgłaszjąca")]
-        public ApplicationUser User { get; set; }
+        [Required]
+        public virtual ApplicationUser User { get; set; }
 
         [Display(Name = "Data zgłoszenia")]
         public DateTime Date { get; set; }
 
         [Required]
         [Display(Name = "Priorytet")]
-        public virtual Prioritet Prioritet { get; set; }   tu nie dociaga sam tych powiazan bo nie ma virtual
+        public virtual Prioritet Prioritet { get; set; }  // tu nie dociaga sam tych powiazan bo nie ma virtual
 
         [Display(Name = "Serwisant")]
-        public ApplicationUser ServiceUser { get; set; }
+        public virtual ApplicationUser ServiceUser { get; set; }
 
         [Display(Name = "Tytuł")]
         public string Title { get; set; }
@@ -86,12 +87,12 @@ namespace HelpDesk.Models
 
         [Required]
         [Display(Name = "Status")]
-        public Status Status { get; set; }
+        public virtual Status Status { get; set; }
 
         [Display(Name = "Załączniki")]
-        public ICollection<AttachmentIssue> Attachment { get; set; }
+        public virtual ICollection<AttachmentIssue> Attachment { get; set; }
 
         [Display(Name = "Kategorie")]
-        public ICollection<CategoryIssue> Category { get; set; }
+        public virtual ICollection<CategoryIssue> Category { get; set; }
     }
 }
