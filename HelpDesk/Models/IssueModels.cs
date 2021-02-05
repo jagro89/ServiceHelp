@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
+using System.Web.DynamicData;
 
 namespace HelpDesk.Models
 {
@@ -75,11 +77,12 @@ namespace HelpDesk.Models
         [Required]
         [Display(Name = "Priorytet")]
         public virtual Prioritet Prioritet { get; set; }  // tu nie dociaga sam tych powiazan bo nie ma virtual
-
+        
         [Display(Name = "Serwisant")]
         public virtual ApplicationUser ServiceUser { get; set; }
 
         [Display(Name = "Tytuł")]
+     //   [EmailAddress]
         public string Title { get; set; }
 
         [Display(Name = "Opis")]

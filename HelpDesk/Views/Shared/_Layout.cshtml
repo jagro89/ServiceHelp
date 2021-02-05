@@ -22,7 +22,7 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Zgłoszenia", "Index", "Issue")</li>
-                    <li>@Html.ActionLink("Dodaj zgłoszenie", "Create", "Issue")</li>
+                    <li>@Html.ActionLink("Dodaj zgłoszenie", "AddEdit", "Issue", routeValues: new { id = 0 }, htmlAttributes: null)</li>
                     <li>@Html.ActionLink("Kontakt", "Contact", "Information")</li>
                     <li>@Html.ActionLink("Baza wiedzy", "KnowledgeBase", "Information")</li>
                 </ul>

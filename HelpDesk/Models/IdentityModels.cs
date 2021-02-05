@@ -23,6 +23,7 @@ namespace HelpDesk.Models
         public DbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
         {
+            this.Configuration.LazyLoadingEnabled = false;
         }
 
         public static DbContext Create()

@@ -54,7 +54,7 @@ namespace HelpDesk.Migrations
 
             context.Statuses.AddOrUpdate(
               p => p.Name,
-              new Status { Name = "Przyjête", CodeName = "coming" },
+              new Status { Name = "Nowe", CodeName = "new" },
               new Status { Name = "Otwarte", CodeName = "open" },
               new Status { Name = "Zamkniête", CodeName = "close" },
               new Status { Name = "Przeterminowane", CodeName = "overdue" }
