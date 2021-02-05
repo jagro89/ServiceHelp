@@ -1,0 +1,78 @@
+﻿@model IEnumerable<ServiceHelp.Models.Issue>
+
+@{
+    ViewBag.Title = "Zgłoszenia";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<p>
+    @Html.ActionLink("Dodaj nowe", "AddEdit")
+    <br />
+    @Html.ActionLink("Pobierz nowe zgłoszenia", "Get", "Home")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            Data
+        </th>
+        <th>
+            Tytuł
+        </th>
+        <th>
+            Opi
+        </th>
+        <th>
+            Status
+        </th>
+        <th>
+            Priorytet
+        </th>
+        <th>
+            Kategoria
+        </th>
+        <th>
+            Przypisany serwisant
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Date)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Prioritet.Name)
+            </td>
+            <td>
+                @if (item.IssueCategory != null)
+                {
+                    foreach (var item_category in item.IssueCategory)
+                    {
+                        @Html.DisplayFor(modelItem => item_category.Category.Name)<text><br /></text>
+                    }
+                }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.User.Email)
+            </td>
+            <td>
+                @Html.ActionLink("Edytuj", "AddEdit", new { id = item.IdIssue }) |
+                @Html.ActionLink("Szczegóły", "Details", new { id = item.IdIssue }) |
+                @Html.ActionLink("Usuń", "Delete", new { id = item.IdIssue })
+            </td>
+        </tr>
+    }
+</table>
