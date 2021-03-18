@@ -16,9 +16,9 @@ namespace ServiceHelp.Dictionary
 
         public List<SelectListItem> GetStatusDictionary(int? idSelectItem = null)
         {
-            var list = _db.Status.Select(a => new SelectListItem() { Text = a.Name, Value = a.IdStatus.ToString(), Selected = a.CodeName == "new" }).ToList();
+            var list = _db.Status.Select(a => new SelectListItem() { Text = a.Name, Value = a.IdStatus.ToString(), Selected = (idSelectItem != null && idSelectItem == 0) ? a.CodeName == "new" : false }).ToList();
 
-            if (idSelectItem != null)
+            if (idSelectItem != null)           
                 list.ForEach(a => { if (a.Value == idSelectItem.ToString()) a.Selected = true; });
 
             return list;
@@ -26,7 +26,7 @@ namespace ServiceHelp.Dictionary
 
         public List<SelectListItem> GetPrioritetDictionary(int? idSelectItem = null)
         {
-            var list = _db.Prioritet.Select(a => new SelectListItem() { Text = a.Name, Value = a.IdPrioritet.ToString(), Selected = a.CodeName == "mid" }).ToList();
+            var list = _db.Prioritet.Select(a => new SelectListItem() { Text = a.Name, Value = a.IdPrioritet.ToString(), Selected = (idSelectItem != null && idSelectItem == 0) ? a.CodeName == "mid" : false }).ToList();
 
             if (idSelectItem != null)
                 list.ForEach(a => { if (a.Value == idSelectItem.ToString()) a.Selected = true; });

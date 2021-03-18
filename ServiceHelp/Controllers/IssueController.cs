@@ -21,16 +21,22 @@ namespace ServiceHelp.Controllers
         }
 
         // GET: Issues
-        public ActionResult Index()
+        public ActionResult Index(int? status, int? prioritet, int[] category)
         {
+            ViewBag.SelectStatus = status;
+            ViewBag.SelectPrioritet = prioritet;
+            ViewBag.SelectCategory = category;
+
             List<Issue> list = _db.Issue
                 .Include(a => a.User)
                 .Include(a => a.IssueCategory)
                     .ThenInclude(a => a.Category)
                 .Include(a => a.Prioritet)
                 .Include(a => a.Status)
-                .Where(i => i.Status.CodeName != "close")
-                .OrderByDescending(i => i.Date)
+                .Where(i => ((status == null && i.Status.CodeName != "close") || (status != null && i.IdStatus == status)) &&                
+                    (prioritet != null ? i.IdPrioritet == prioritet : 1 == 1) && 
+                    (category.Count() == 0 ? 1 == 1 : i.IssueCategory.Select(a => a.IdCategory).Where(b => category.Contains(b)).Any()))
+                .OrderByDescending(i => i.IdIssue)
                 .ToList();
             return View(list);
         }

@@ -7,72 +7,130 @@
 
 <h2>@ViewBag.Title</h2>
 
+@inject ServiceHelp.Dictionary.IssueDictionary dictionary
+
 <p>
     @Html.ActionLink("Dodaj nowe", "AddEdit")
     <br />
     @Html.ActionLink("Pobierz nowe zgłoszenia", "Get", "Home")
 </p>
-<table class="table">
-    <tr>
-        <th>
-            Data
-        </th>
-        <th>
-            Tytuł
-        </th>
-        <th>
-            Opi
-        </th>
-        <th>
-            Status
-        </th>
-        <th>
-            Priorytet
-        </th>
-        <th>
-            Kategoria
-        </th>
-        <th>
-            Przypisany serwisant
-        </th>
-        <th></th>
-    </tr>
-
-    @foreach (var item in Model)
-    {
+<form>
+    <table class="table">
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Date)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Status.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Prioritet.Name)
-            </td>
-            <td>
-                @if (item.IssueCategory != null)
-                {
-                    foreach (var item_category in item.IssueCategory)
-                    {
-                        @Html.DisplayFor(modelItem => item_category.Category.Name)<text><br /></text>
-                    }
-                }
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.User.Email)
-            </td>
-            <td>
-                @Html.ActionLink("Edytuj", "AddEdit", new { id = item.IdIssue }) |
-                @Html.ActionLink("Szczegóły", "Details", new { id = item.IdIssue }) |
-                @Html.ActionLink("Usuń", "Delete", new { id = item.IdIssue })
-            </td>
+            <th>
+                Data
+            </th>
+            <th>
+                Tytuł
+            </th>
+            <th>
+                Opis
+            </th>
+            <th>
+                Status
+            </th>
+            <th>
+                Priorytet
+            </th>
+            <th>
+                Kategoria
+            </th>
+            <th>
+                Przypisany serwisant
+            </th>
+            <th></th>
         </tr>
-    }
-</table>
+        <tr>
+            <th>
+            </th>
+            <th>
+            </th>
+            <th>
+            </th>
+            <th>
+                @{
+                    int? status = (int?)ViewData["SelectStatus"];
+                    int? priorytet = (int?)ViewData["SelectPrioritet"];
+                    int[] category = (int[])ViewData["SelectCategory"];
+                }
+                <select id="status_select" name="status" asp-items="@dictionary.GetStatusDictionary(status)">
+                    <option disabled selected ></option>
+                </select>
+            </th>
+            <th>
+                <select id="prioritet_select" name="prioritet" asp-items="@dictionary.GetPrioritetDictionary(priorytet)">
+                    <option disabled selected></option>
+                </select>
+            </th>
+            <th>
+                <select id="category_select" name="category" multiple asp-items="@dictionary.GetCategoryIssueDictionary(category)">
+                </select>
+            </th>
+            <th>
+            </th>
+            <th>
+                <button class="btn btn-outline-primary" type="submit">Filtruj</button>
+            </th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Date)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Prioritet.Name)
+                </td>
+                <td>
+                    @if (item.IssueCategory != null)
+                    {
+                        foreach (var item_category in item.IssueCategory)
+                        {
+                            @Html.DisplayFor(modelItem => item_category.Category.Name)<text><br /></text>
+                        }
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.User.Email)
+                </td>
+                <td>
+                    @Html.ActionLink("Edytuj", "AddEdit", new { id = item.IdIssue }) |
+                    @Html.ActionLink("Szczegóły", "Details", new { id = item.IdIssue }) |
+                    @Html.ActionLink("Usuń", "Delete", new { id = item.IdIssue })
+                </td>
+            </tr>
+        }
+    </table>
+</form>
+
+@section Styles {
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+}
+
+
+@section Scripts
+{
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script type="text/javascript">
+        $("#status_select").select2({
+            placeholder: 'Wybierz...',
+            allowClear: true
+        });
+        $("#prioritet_select").select2({
+            placeholder: 'Wybierz...',
+            allowClear: true
+        });
+        $("#category_select").select2({
+        });
+    </script>
+}
