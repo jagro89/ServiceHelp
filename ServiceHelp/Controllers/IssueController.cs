@@ -8,16 +8,21 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using ServiceHelp.Utils;
 using ServiceHelp.Data;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace ServiceHelp.Controllers
 {
+    [Authorize]
     public class IssueController : BaseController
     {
         private readonly ApplicationDbContext _db;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public IssueController(ApplicationDbContext db)
+        public IssueController(ApplicationDbContext db, UserManager<IdentityUser> userManager)
         {
             _db = db;
+            _userManager = userManager;
         }
 
         // GET: Issues
@@ -27,17 +32,21 @@ namespace ServiceHelp.Controllers
             ViewBag.SelectPrioritet = prioritet;
             ViewBag.SelectCategory = category;
 
-            List<Issue> list = _db.Issue
+            var criteria = _db.Issue
                 .Include(a => a.User)
                 .Include(a => a.IssueCategory)
                     .ThenInclude(a => a.Category)
                 .Include(a => a.Prioritet)
                 .Include(a => a.Status)
-                .Where(i => ((status == null && i.Status.CodeName != "close") || (status != null && i.IdStatus == status)) &&                
-                    (prioritet != null ? i.IdPrioritet == prioritet : 1 == 1) && 
-                    (category.Count() == 0 ? 1 == 1 : i.IssueCategory.Select(a => a.IdCategory).Where(b => category.Contains(b)).Any()))
-                .OrderByDescending(i => i.IdIssue)
-                .ToList();
+                .Where(i => ((status == null && i.Status.CodeName != "close") || (status != null && i.IdStatus == status)) &&
+                    (prioritet != null ? i.IdPrioritet == prioritet : 1 == 1) &&
+                    (category.Count() == 0 ? 1 == 1 : i.IssueCategory.Select(a => a.IdCategory).Where(b => category.Contains(b)).Any()));
+
+            var user = _userManager.GetUserAsync(HttpContext.User).Result;
+            if (_userManager.IsInRoleAsync(user, "Użytkownik").Result)
+                criteria = criteria.Where(a => a.IdUser == user.Id);
+
+            List<Issue> list = criteria.OrderByDescending(i => i.IdIssue).ToList();
             return View(list);
         }
 
@@ -132,7 +141,12 @@ namespace ServiceHelp.Controllers
                 to_save.Prioritet = _db.Prioritet.Find(issue.IdPrioritet);
                 to_save.Title = issue.Title;
                 to_save.Description = issue.Description;
-                to_save.Status = _db.Status.Find(issue.IdStatus);
+
+                var user = _userManager.GetUserAsync(HttpContext.User).Result;
+                if (_userManager.IsInRoleAsync(user, "Administrator").Result || _userManager.IsInRoleAsync(user, "Serwisant").Result)
+                    to_save.Status = _db.Status.Find(issue.IdStatus);
+                else if (_userManager.IsInRoleAsync(user, "Użytkownik").Result && issue.Id == 0)
+                    to_save.Status = _db.Status.First(a => a.CodeName == "new");
 
                 var to_delete = to_save.IssueCategory.Where(a => !issue.CategoryIds.Contains(a.IdCategory)).ToList();
                 _db.RemoveRange(to_delete);

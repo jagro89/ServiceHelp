@@ -21,8 +21,9 @@ namespace ServiceHelp
                 {
                     var context = services.GetRequiredService<ApplicationDbContext>();
                     var userManager = services.GetRequiredService<UserManager<IdentityUser>>();
+                    var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
                     context.Database.Migrate();
-                    DataSeed.AddSeed(userManager, context);
+                    DataSeed.AddSeed(userManager, roleManager, context);
                 }
                 catch (Exception ex)
                 {

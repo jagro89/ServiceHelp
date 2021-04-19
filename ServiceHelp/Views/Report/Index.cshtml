@@ -1,0 +1,56 @@
+﻿@model ServiceHelp.ViewModels.ReportViewModels
+
+@{
+    ViewData["Title"] = "Raport";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Raport</h1>
+<hr />
+
+<div id="chart" style="height: 370px; width: 100%;"></div>
+
+@section Styles {
+    <script>
+        window.onload = function () {
+            var options = {
+                title: {
+                    text: "Raport zgłoszeń"
+                },
+                data: [
+                    {
+                        type: "column",
+                        dataPoints: [
+                            @for (int i = 0; i < Model.ReportItems.Count; i++)
+                            {
+                                if (i == Model.ReportItems.Count - 1)
+                                {
+                                    <text>{ label: "@Model.ReportItems[i].Category", y: @Model.ReportItems[i].CountIssue }</text>
+                                }
+                                else
+                                {
+                                    <text>{ label: "@Model.ReportItems[i].Category", y: @Model.ReportItems[i].CountIssue },</text>
+                                }
+                            }
+                        ]
+                    }
+                ]
+            };
+
+            $("#chart").CanvasJSChart(options);
+        }
+    </script>
+}
+<br />
+<h2>Wszystkie twoje zgłoszenia</h2>
+<ul>
+    @foreach (var item in Model.Issues)
+    {
+        <li>@item.Date.ToShortDateString() @item.Name</li>
+    }
+</ul>
+
+@section Scripts {
+    <script type="text/javascript" src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript" src="https://canvasjs.com/assets/script/jquery.canvasjs.min.js"></script>
+}

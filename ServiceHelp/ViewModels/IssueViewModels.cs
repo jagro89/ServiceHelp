@@ -24,7 +24,6 @@ namespace ServiceHelp.ViewModels
         [DisplayName("Opis")]
         public string Description { get; set; }
 
-        [Required]
         [DisplayName("Status")]
         public int IdStatus { get; set; }
 
