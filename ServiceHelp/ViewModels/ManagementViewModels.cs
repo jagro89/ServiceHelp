@@ -24,6 +24,11 @@ namespace ServiceHelp.ViewModels
 
     public class UserViewModels
     {
+        public UserViewModels()
+        {
+            Roles = new string[0];
+        }
+
         public string Id { get; set; }
 
         [DisplayName("Adres Email")]
