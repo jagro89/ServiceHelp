@@ -38,6 +38,7 @@ namespace ServiceHelp.Services
                             if (user == null)
                             {
                                 user = new IdentityUser(email);
+                                user.Email = email;
                                 _userManager.CreateAsync(user).Wait();
                             }
 

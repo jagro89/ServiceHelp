@@ -40,6 +40,7 @@ namespace ServiceHelp
 
             services.AddScoped<IssueDictionary>();
             services.AddScoped<IssueMailReaderService>();
+            services.AddScoped<RoleDictionary>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
