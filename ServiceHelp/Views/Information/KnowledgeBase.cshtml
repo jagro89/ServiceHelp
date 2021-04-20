@@ -1,4 +1,4 @@
-﻿
+﻿@model List<ServiceHelp.Models.KnowledgeBase>
 @{
     ViewBag.Title = "Baza wiedzy";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -6,3 +6,28 @@
 
 <h2>@ViewBag.Title</h2>
 
+<table>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                <a data-toggle="collapse" href="#item-@Model.IndexOf(item)" role="button" aria-expanded="false" aria-controls="item-@Model.IndexOf(item)">
+                    <em class="bi-plus"></em>
+                </a>
+            </td>
+            <td>
+                @(Model.IndexOf(item) + 1).
+            </td>
+            <td>@item.Question</td>
+        </tr>
+        <tr class="collapse tr-none-border" id="item-@Model.IndexOf(item)">
+            <td></td>
+            <td></td>
+            <td>@item.Answer</td>
+        </tr>
+    }
+</table>
+
+@section Styles {
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css">
+}

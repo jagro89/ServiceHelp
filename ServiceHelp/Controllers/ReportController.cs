@@ -1,15 +1,10 @@
-﻿using ServiceHelp.Models;
-using ServiceHelp.ViewModels;
-using Microsoft.AspNetCore.Mvc;
-using System.Linq;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using System;
-using ServiceHelp.Utils;
-using ServiceHelp.Data;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using ServiceHelp.Data;
+using ServiceHelp.ViewModels;
+using System.Linq;
 
 namespace ServiceHelp.Controllers
 {

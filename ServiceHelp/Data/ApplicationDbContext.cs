@@ -20,6 +20,7 @@ namespace ServiceHelp.Data
         public DbSet<Category> Category { get; set; }
         public DbSet<Issue> Issue { get; set; }
         public DbSet<IssueCategory> IssueCategory { get; set; }
+        public DbSet<KnowledgeBase> KnowledgeBase { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
