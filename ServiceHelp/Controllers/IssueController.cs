@@ -192,7 +192,7 @@ namespace ServiceHelp.Controllers
 
         // POST: Issues/Delete/5
         [HttpPost]
-        public ActionResult Delete(int id)
+        public ActionResult DeleteConfirm(int id)
         {
             try
             {
