@@ -23,7 +23,6 @@ namespace ServiceHelp.Controllers
         }
 
         // GET: KnowledgeBase
-        [Authorize]
         public ActionResult KnowledgeBase()
         {
             return View(_db.KnowledgeBase.ToList());

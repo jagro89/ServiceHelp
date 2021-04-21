@@ -36,7 +36,7 @@ namespace ServiceHelp.Data
             {
                 testuser = new IdentityUser() { Email = "test@test.pl", UserName = "test@test.pl", EmailConfirmed = true, PhoneNumber = "2" };
                 userManager.CreateAsync(testuser, "1234Qwer.?").Wait();
-                userManager.AddToRoleAsync(testuser, "Użytkownik").Wait();
+                userManager.AddToRoleAsync(testuser, Consts.DEF_USER_ROLE).Wait();
             }
 
             if (!db.Prioritet.Any())

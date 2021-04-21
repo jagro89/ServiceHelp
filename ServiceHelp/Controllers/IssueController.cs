@@ -46,7 +46,7 @@ namespace ServiceHelp.Controllers
                     (category.Count() == 0 ? 1 == 1 : i.IssueCategory.Select(a => a.IdCategory).Where(b => category.Contains(b)).Any()));
 
             var user = _userManager.GetUserAsync(HttpContext.User).Result;
-            if (_userManager.IsInRoleAsync(user, "Użytkownik").Result)
+            if (_userManager.IsInRoleAsync(user, Consts.DEF_USER_ROLE).Result)
                 criteria = criteria.Where(a => a.IdUser == user.Id);
 
             List<Issue> list = criteria.OrderByDescending(i => i.IdIssue).ToList();
@@ -192,7 +192,7 @@ namespace ServiceHelp.Controllers
 
         // POST: Issues/Delete/5
         [HttpPost]
-        public ActionResult Delete(int id, string aaaa)
+        public ActionResult Delete(int id)
         {
             try
             {
@@ -209,7 +209,7 @@ namespace ServiceHelp.Controllers
             }
         }
 
-        public ActionResult Get()
+        public ActionResult GetNewIssue()
         {
             _issueMailReaderService.Do();
             return RedirectToAction("Index", "Issue");
