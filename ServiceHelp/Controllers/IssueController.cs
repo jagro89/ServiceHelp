@@ -10,6 +10,7 @@ using ServiceHelp.Utils;
 using ServiceHelp.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using ServiceHelp.Services;
 
 namespace ServiceHelp.Controllers
 {
@@ -18,11 +19,13 @@ namespace ServiceHelp.Controllers
     {
         private readonly ApplicationDbContext _db;
         private readonly UserManager<IdentityUser> _userManager;
-
-        public IssueController(ApplicationDbContext db, UserManager<IdentityUser> userManager)
+        private readonly IssueMailReaderService _issueMailReaderService;
+        
+        public IssueController(ApplicationDbContext db, UserManager<IdentityUser> userManager, IssueMailReaderService issueMailReaderService)
         {
             _db = db;
             _userManager = userManager;
+            _issueMailReaderService = issueMailReaderService;
         }
 
         // GET: Issues
@@ -204,6 +207,12 @@ namespace ServiceHelp.Controllers
             {
                 return BadRequest();
             }
+        }
+
+        public ActionResult Get()
+        {
+            _issueMailReaderService.Do();
+            return RedirectToAction("Index", "Issue");
         }
     }
 }

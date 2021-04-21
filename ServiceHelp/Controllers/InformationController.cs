@@ -40,8 +40,8 @@ namespace ServiceHelp.Controllers
             return View(result);
         }
 
-        [Authorize(Roles = Consts.DEF_SERVICE_MAN_ROLE + "," + Consts.DEF_ADMIN_ROLE)]
         [HttpPost]
+        [Authorize(Roles = Consts.DEF_SERVICE_MAN_ROLE + "," + Consts.DEF_ADMIN_ROLE)]
         [ValidateAntiForgeryToken]
         public ActionResult AddEdit(KnowledgeBase model)
         {
