@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using ServiceHelp.Data;
 using ServiceHelp.Models;
+using ServiceHelp.Utils;
 using System.Linq;
 
 namespace ServiceHelp.Controllers
@@ -28,7 +29,7 @@ namespace ServiceHelp.Controllers
             return View(_db.KnowledgeBase.ToList());
         }
 
-        [Authorize(Roles = "Serwisant,Administrator")]
+        [Authorize(Roles = Consts.DEF_SERVICE_MAN_ROLE + "," + Consts.DEF_ADMIN_ROLE)]
         public ActionResult AddEdit(int? id = null)
         {
             KnowledgeBase result;
@@ -39,7 +40,7 @@ namespace ServiceHelp.Controllers
             return View(result);
         }
 
-        [Authorize(Roles = "Serwisant,Administrator")]
+        [Authorize(Roles = Consts.DEF_SERVICE_MAN_ROLE + "," + Consts.DEF_ADMIN_ROLE)]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult AddEdit(KnowledgeBase model)

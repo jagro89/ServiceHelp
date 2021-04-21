@@ -3,12 +3,13 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ServiceHelp.Data;
+using ServiceHelp.Utils;
 using ServiceHelp.ViewModels;
 using System.Linq;
 
 namespace ServiceHelp.Controllers
 {
-    [Authorize(Roles = "Serwisant,Administrator")]
+    [Authorize(Roles = Consts.DEF_SERVICE_MAN_ROLE + "," + Consts.DEF_ADMIN_ROLE)]
     public class ReportController : BaseController
     {
         private readonly ApplicationDbContext _db;

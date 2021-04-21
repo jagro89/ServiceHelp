@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using System.Collections.Generic;
 using System.Linq;
+using ServiceHelp.Utils;
 
 namespace ServiceHelp.Data
 {
@@ -18,16 +19,16 @@ namespace ServiceHelp.Data
 
             if (!roleManager.Roles.Any())
             {
-                var role = new IdentityRole { Name = "Administrator" };
-                var service = new IdentityRole { Name = "Serwisant" };
-                var user = new IdentityRole { Name = "Użytkownik" };
+                var role = new IdentityRole { Name = Consts.DEF_ADMIN_ROLE };
+                var service = new IdentityRole { Name = Consts.DEF_SERVICE_MAN_ROLE };
+                var user = new IdentityRole { Name = Consts.DEF_USER_ROLE };
                 roleManager.CreateAsync(role).Wait();
                 roleManager.CreateAsync(service).Wait();
                 roleManager.CreateAsync(user).Wait();
 
                 var usr = userManager.FindByEmailAsync("admin@servicehelp.pl").Result;
-                if (!userManager.IsInRoleAsync(usr, "Administrator").Result)
-                    userManager.AddToRoleAsync(usr, "Administrator").Wait();
+                if (!userManager.IsInRoleAsync(usr, Consts.DEF_ADMIN_ROLE).Result)
+                    userManager.AddToRoleAsync(usr, Consts.DEF_ADMIN_ROLE).Wait();
             }
 
             var testuser = userManager.FindByEmailAsync("test@test.pl").Result;

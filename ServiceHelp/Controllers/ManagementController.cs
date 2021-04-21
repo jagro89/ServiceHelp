@@ -2,22 +2,21 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ServiceHelp.Data;
+using ServiceHelp.Utils;
 using ServiceHelp.ViewModels;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace ServiceHelp.Controllers
 {
-    [Authorize(Roles = "Administrator")]
+    [Authorize(Roles = Consts.DEF_ADMIN_ROLE)]
     public class ManagementController : BaseController
     {
         private readonly UserManager<IdentityUser> _userManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
 
-        public ManagementController(ApplicationDbContext db, UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
+        public ManagementController(ApplicationDbContext db, UserManager<IdentityUser> userManager)
         {
             _userManager = userManager;
-            _roleManager = roleManager;
         }
 
         public ActionResult Index()

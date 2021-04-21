@@ -143,9 +143,9 @@ namespace ServiceHelp.Controllers
                 to_save.Description = issue.Description;
 
                 var user = _userManager.GetUserAsync(HttpContext.User).Result;
-                if (_userManager.IsInRoleAsync(user, "Administrator").Result || _userManager.IsInRoleAsync(user, "Serwisant").Result)
+                if (_userManager.IsInRoleAsync(user, Consts.DEF_ADMIN_ROLE).Result || _userManager.IsInRoleAsync(user, Consts.DEF_SERVICE_MAN_ROLE).Result)
                     to_save.Status = _db.Status.Find(issue.IdStatus);
-                else if (_userManager.IsInRoleAsync(user, "Użytkownik").Result && issue.Id == 0)
+                else if (_userManager.IsInRoleAsync(user, Consts.DEF_USER_ROLE).Result && issue.Id == 0)
                     to_save.Status = _db.Status.First(a => a.CodeName == "new");
 
                 var to_delete = to_save.IssueCategory.Where(a => !issue.CategoryIds.Contains(a.IdCategory)).ToList();
