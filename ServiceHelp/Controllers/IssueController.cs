@@ -20,7 +20,7 @@ namespace ServiceHelp.Controllers
         private readonly ApplicationDbContext _db;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly IssueMailReaderService _issueMailReaderService;
-        
+
         public IssueController(ApplicationDbContext db, UserManager<IdentityUser> userManager, IssueMailReaderService issueMailReaderService)
         {
             _db = db;
@@ -41,11 +41,12 @@ namespace ServiceHelp.Controllers
                     .ThenInclude(a => a.Category)
                 .Include(a => a.Prioritet)
                 .Include(a => a.Status)
+                .Include(a => a.ServiceUser)
                 .Where(i => ((status == null && i.Status.CodeName != "close") || (status != null && i.IdStatus == status)) &&
                     (prioritet != null ? i.IdPrioritet == prioritet : 1 == 1) &&
                     (category.Count() == 0 ? 1 == 1 : i.IssueCategory.Select(a => a.IdCategory).Where(b => category.Contains(b)).Any()));
 
-            var user = _userManager.GetUserAsync(HttpContext.User).Result;
+            var user = _userManager.GetUserAsync(GetCurrentUser()).Result;
             if (_userManager.IsInRoleAsync(user, Consts.DEF_USER_ROLE).Result)
                 criteria = criteria.Where(a => a.IdUser == user.Id);
 
@@ -105,6 +106,8 @@ namespace ServiceHelp.Controllers
                 issue.Description = issueDB.Description;
                 issue.IdStatus = issueDB.Status.IdStatus;
                 issue.CategoryIds = issueDB.IssueCategory.Select(a => a.IdCategory).ToArray();
+                if (issueDB.ServiceUser != null)
+                    issue.IdServiceUser = issueDB.ServiceUser.Id;
 
                 bool is_admin = User.IsInRole(Consts.DEF_ADMIN_ROLE);
                 bool is_srvice = User.IsInRole(Consts.DEF_SERVICE_MAN_ROLE);
@@ -145,7 +148,10 @@ namespace ServiceHelp.Controllers
                 to_save.Title = issue.Title;
                 to_save.Description = issue.Description;
 
-                var user = _userManager.GetUserAsync(HttpContext.User).Result;
+                var user = _userManager.GetUserAsync(GetCurrentUser()).Result;
+                if (_userManager.IsInRoleAsync(user, Consts.DEF_ADMIN_ROLE).Result || _userManager.IsInRoleAsync(user, Consts.DEF_SERVICE_MAN_ROLE).Result)
+                    to_save.IdServiceUser = issue.IdServiceUser;
+
                 if (_userManager.IsInRoleAsync(user, Consts.DEF_ADMIN_ROLE).Result || _userManager.IsInRoleAsync(user, Consts.DEF_SERVICE_MAN_ROLE).Result)
                     to_save.Status = _db.Status.Find(issue.IdStatus);
                 else if (_userManager.IsInRoleAsync(user, Consts.DEF_USER_ROLE).Result && issue.Id == 0)
@@ -154,16 +160,20 @@ namespace ServiceHelp.Controllers
                 var to_delete = to_save.IssueCategory.Where(a => !issue.CategoryIds.Contains(a.IdCategory)).ToList();
                 _db.RemoveRange(to_delete);
 
-                var to_add = issue.CategoryIds.Where(a => !to_save.IssueCategory.Select(a => a.IdCategory).Contains(a)).ToList();
-                var cates = _db.Category.Where(a => to_add.Contains(a.IdCategory)).ToList();
-                cates.ForEach(a => to_save.IssueCategory.Add(new IssueCategory() { Issue = to_save, Category = a }));
+                if (issue.CategoryIds != null)
+                {
+                    var to_add = issue.CategoryIds.Where(a => !to_save.IssueCategory.Select(a => a.IdCategory).Contains(a)).ToList();
+                    var cates = _db.Category.Where(a => to_add.Contains(a.IdCategory)).ToList();
+                    cates.ForEach(a => to_save.IssueCategory.Add(new IssueCategory() { Issue = to_save, Category = a }));
+                }
 
                 _db.SaveChanges();
 
                 return RedirectToAction("Index");
             }
-            catch
+            catch (Exception e)
             {
+                ModelState.AddModelError("", "Błąd zapisu formularza");
                 return View(issue);
             }
         }

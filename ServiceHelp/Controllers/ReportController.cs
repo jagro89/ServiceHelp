@@ -23,7 +23,7 @@ namespace ServiceHelp.Controllers
 
         public ActionResult Index()
         {
-            var user = _userManager.GetUserAsync(HttpContext.User).Result;
+            var user = _userManager.GetUserAsync(GetCurrentUser()).Result;
 
             var category = _db.Category
                 .Include(a => a.IssueCategory)

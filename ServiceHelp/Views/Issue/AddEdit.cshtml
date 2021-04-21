@@ -1,14 +1,14 @@
 ﻿@model ServiceHelp.ViewModels.IssueViewModel
-@using ServiceHelp.Utils 
+@using ServiceHelp.Utils
 
 @{
-    ViewData["Title"] = "AddEdit";
+    ViewData["Title"] = "Edycja zgłoszenia";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 @inject ServiceHelp.Dictionary.IssueDictionary dictionary
 
-<h2>Edycja</h2>
+<h2>@ViewData["Title"]</h2>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -48,6 +48,16 @@
                 <select asp-for="CategoryIds" data-placeholder="Wybierz kategorie" class="form-control" multiple="multiple" asp-items="@dictionary.GetCategoryIssueDictionary()"></select>
                 <span asp-validation-for="CategoryIds" class="text-danger"></span>
             </div>
+            @if (User.IsInRole(Consts.DEF_ADMIN_ROLE) || User.IsInRole(Consts.DEF_SERVICE_MAN_ROLE))
+            {
+                <div class="form-group">
+                    <label asp-for="IdServiceUser" class="control-label"></label>
+                    <select asp-for="IdServiceUser" data-placeholder="Przypisz serwisanta" class="form-control" asp-items="@dictionary.GetServiceMans()">
+                        <option disabled selected></option>
+                    </select>
+                    <span asp-validation-for="IdServiceUser" class="text-danger"></span>
+                </div>
+            }
             <div class="form-group">
                 <input type="submit" value="Zapisz" class="btn btn-primary" />
             </div>

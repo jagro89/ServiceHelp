@@ -29,6 +29,9 @@ namespace ServiceHelp.ViewModels
 
         [DisplayName("Kategorie")]
         public int[] CategoryIds { get; set; }
+
+        [DisplayName("Serwisanci")]
+        public string IdServiceUser { get; set; }
     }
 
     public class IssueViewModelDetails
