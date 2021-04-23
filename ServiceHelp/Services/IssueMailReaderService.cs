@@ -84,7 +84,7 @@ namespace ServiceHelp.Services
             {
                 var message = new MimeMessage();
 
-                message.From.Add(new MailboxAddress("ServiceHelp", "czeslaw.czeslaw222@interia.pl"));
+                message.From.Add(new MailboxAddress("ServiceHelp", _mail));
                 message.To.Add(new MailboxAddress(item.User.UserName, item.User.Email));
                 message.Subject = "Przyjęto zgłoszenie";
                 message.Body = new TextPart("plain") { Text = $"Zarejestrowano zgłoszenie w systemie ServiceHelp. Link do zgłosznia {_linkGenerator.GetUriByAction("Details", "Issue", new { id = item.IdIssue }, _httpContext.HttpContext.Request.Scheme, _httpContext.HttpContext.Request.Host)}" };
