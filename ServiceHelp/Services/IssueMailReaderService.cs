@@ -37,7 +37,7 @@ namespace ServiceHelp.Services
         public void Do()
         {
             List<Issue> donloadedIssues = new List<Issue>();
-            using (Pop3Client client = new Pop3Client())// new ProtocolLogger("pop3.log"));
+            using (Pop3Client client = new Pop3Client())
             {
                 client.Connect(_host, _portPop3, true);
                 client.Authenticate(_mail, _pass);
