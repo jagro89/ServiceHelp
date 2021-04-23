@@ -49,7 +49,7 @@ namespace ServiceHelp.Data
                 };
 
                 db.Prioritet.AddRange(prioritest);
-                db.SaveChangesAsync();
+                db.SaveChangesAsync().Wait();
             }
 
             if (!db.Status.Any())
@@ -63,7 +63,7 @@ namespace ServiceHelp.Data
                 };
 
                 db.Status.AddRange(statuses);
-                db.SaveChangesAsync();
+                db.SaveChangesAsync().Wait();
             }
 
             if (!db.Category.Any())
@@ -76,7 +76,7 @@ namespace ServiceHelp.Data
                 };
 
                 db.Category.AddRange(categories);
-                db.SaveChangesAsync();
+                db.SaveChangesAsync().Wait();
             }
         }
     }
